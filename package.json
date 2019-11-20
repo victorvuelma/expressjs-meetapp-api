@@ -1,0 +1,11 @@
+{
+  "name": "expressjs-meetapp-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Victor Vuelma <victorvuelma@outlook.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.0",
+    "sucrase": "^3.10.1"
+  }
+}
