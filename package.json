@@ -5,6 +5,7 @@
   "author": "Victor Vuelma <victorvuelma@outlook.com>",
   "license": "MIT",
   "scripts": {
+    "queue": "nodemon src/queue.js",
     "dev": "nodemon src/server.js"
   },
   "devDependencies": {

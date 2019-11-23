@@ -28,7 +28,7 @@ class Queue {
   }
 
   processQueue() {
-    this.jobs.forEach(job => {
+    jobs.forEach(job => {
       const { bee, handle } = this.queues[job.key];
 
       bee.on('failure', this.handleFailure).process(handle);
