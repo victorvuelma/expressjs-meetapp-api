@@ -3,6 +3,9 @@ import { startOfHour, endOfHour } from 'date-fns';
 
 import Subscription from '../models/Subscription';
 import Meetup from '../models/Meetup';
+import User from '../models/User';
+import Queue from '../../lib/Queue';
+import SubscriptionOrganizerMail from '../job/SubscriptionOrganizerMail';
 
 class SubscriptionController {
   async store(req, res) {
@@ -11,7 +14,15 @@ class SubscriptionController {
       userId,
     } = req;
 
-    const meetup = await Meetup.findByPk(meetupId);
+    const meetup = await Meetup.findByPk(meetupId, {
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'name', 'email'],
+        },
+      ],
+    });
 
     if (!meetup) {
       return res.status(400).json({ error: 'Invalid meetup' });
@@ -68,6 +79,13 @@ class SubscriptionController {
     const subscription = await Subscription.create({
       user_id: userId,
       meetup_id: meetupId,
+    });
+
+    const user = await User.findByPk(req.userId);
+
+    await Queue.addJob(SubscriptionOrganizerMail.key, {
+      meetup,
+      user,
     });
 
     return res.json(subscription);
