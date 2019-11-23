@@ -6,8 +6,43 @@ import Meetup from '../models/Meetup';
 import User from '../models/User';
 import Queue from '../../lib/Queue';
 import SubscriptionOrganizerMail from '../job/SubscriptionOrganizerMail';
+import File from '../models/File';
 
 class SubscriptionController {
+  async index(req, res) {
+    const subscriptions = await Subscription.findAll({
+      where: {
+        user_id: req.userId,
+      },
+      include: [
+        {
+          model: Meetup,
+          as: 'meetup',
+          where: {
+            date: {
+              [Op.gte]: new Date(),
+            },
+          },
+          attributes: ['id', 'title', 'description', 'date', 'location'],
+          include: [
+            {
+              model: User,
+              as: 'user',
+              attributes: ['id', 'name'],
+            },
+            {
+              model: File,
+              as: 'image',
+              attributes: ['path', 'url'],
+            },
+          ],
+        },
+      ],
+    });
+
+    return res.json(subscriptions);
+  }
+
   async store(req, res) {
     const {
       params: { meetupId },
