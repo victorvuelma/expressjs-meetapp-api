@@ -1,5 +1,7 @@
 import Bee from 'bee-queue';
 
+import * as Sentry from '@sentry/node';
+
 import redisConfig from '../config/redis';
 import SubscriptionOrganizerMail from '../app/job/SubscriptionOrganizerMail';
 
@@ -31,12 +33,14 @@ class Queue {
     jobs.forEach(job => {
       const { bee, handle } = this.queues[job.key];
 
-      bee.on('failure', this.handleFailure).process(handle);
+      bee.on('failed', this.handleFailure).process(handle);
     });
   }
 
   handleFailure(job, err) {
     console.error(`Queue ${job.queue.name}: FAILED`, err);
+
+    Sentry.captureException(err);
   }
 }
 
