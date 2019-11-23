@@ -1,9 +1,60 @@
 import * as Yup from 'yup';
-import { parseISO, isBefore } from 'date-fns';
+import { parseISO, isBefore, startOfDay, endOfDay } from 'date-fns';
+import { Op } from 'sequelize';
 
 import Meetup from '../models/Meetup';
+import User from '../models/User';
+import File from '../models/File';
 
 class MeetupController {
+  async index(req, res) {
+    const schema = Yup.object().shape({
+      date: Yup.date(),
+      page: Yup.number().integer(),
+    });
+
+    if (!(await schema.isValid(req.query))) {
+      return res.status(400).json({ error: 'Invalid query' });
+    }
+
+    const { page = 1, date } = req.query;
+    const where = {};
+    if (date) {
+      const parsedDate = parseISO(date);
+
+      where.date = {
+        [Op.between]: [startOfDay(parsedDate), endOfDay(parsedDate)],
+      };
+    }
+
+    const meetups = await Meetup.findAll({
+      where,
+      limit: 10,
+      offset: (page - 1) * 10,
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'name', 'email'],
+          include: [
+            {
+              model: File,
+              as: 'avatar',
+              attributes: ['path', 'url'],
+            },
+          ],
+        },
+        {
+          model: File,
+          as: 'image',
+          attributes: ['path', 'url'],
+        },
+      ],
+    });
+
+    return res.json(meetups);
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       title: Yup.string().required(),
