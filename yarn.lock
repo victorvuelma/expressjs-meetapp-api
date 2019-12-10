@@ -993,6 +993,11 @@ express-async-errors@^3.1.1:
   resolved "https://registry.yarnpkg.com/express-async-errors/-/express-async-errors-3.1.1.tgz#6053236d61d21ddef4892d6bd1d736889fc9da41"
   integrity sha512-h6aK1da4tpqWSbyCa3FxB/V6Ehd4EEB15zyQq9qe75OZBp0krinNKuH4rAY+S/U/2I36vdLAUFSjQJ+TFmODng==
 
+express-delay@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/express-delay/-/express-delay-0.2.0.tgz#19ac6dc274447a3d06088f1f1c4bab23ecab3b9e"
+  integrity sha1-GaxtwnREej0GCI8fHEurI+yrO54=
+
 express-handlebars@^3.0.0, express-handlebars@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/express-handlebars/-/express-handlebars-3.1.0.tgz#c177ee9a81f6a2abada6b550b77b3e30c6bc0796"

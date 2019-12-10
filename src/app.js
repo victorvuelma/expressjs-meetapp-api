@@ -4,6 +4,7 @@ import { resolve } from 'path';
 
 import express from 'express';
 import 'express-async-errors';
+import delay from 'express-delay';
 
 import cors from 'cors';
 
@@ -36,6 +37,10 @@ class App {
       '/files',
       express.static(resolve(__dirname, '..', 'tmp', 'uploads'))
     );
+
+    if (process.env.NODE_ENV === 'development') {
+      this.server.use(delay(200));
+    }
   }
 
   routes() {
