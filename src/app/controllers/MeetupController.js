@@ -7,6 +7,38 @@ import User from '../models/User';
 import File from '../models/File';
 
 class MeetupController {
+  async get(req, res) {
+    const id = Number(req.params.id);
+
+    const meetup = await Meetup.findByPk(id, {
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'name', 'email'],
+          include: [
+            {
+              model: File,
+              as: 'avatar',
+              attributes: ['path', 'url'],
+            },
+          ],
+        },
+        {
+          model: File,
+          as: 'image',
+          attributes: ['path', 'url'],
+        },
+      ],
+    });
+
+    if (!meetup) {
+      return res.status(404).json({});
+    }
+
+    return res.json(meetup);
+  }
+
   async index(req, res) {
     const schema = Yup.object().shape({
       date: Yup.date(),
