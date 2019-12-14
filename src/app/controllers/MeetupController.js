@@ -27,7 +27,7 @@ class MeetupController {
         {
           model: File,
           as: 'image',
-          attributes: ['path', 'url'],
+          attributes: ['id', 'path', 'url'],
         },
       ],
     });
