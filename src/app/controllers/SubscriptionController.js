@@ -125,6 +125,29 @@ class SubscriptionController {
 
     return res.json(subscription);
   }
+
+  async delete(req, res) {
+    const {
+      params: { meetupId },
+      userId,
+    } = req;
+
+    const subscription = await Subscription.findOne({
+      where: {
+        user_id: userId,
+        meetup_id: meetupId,
+      },
+    });
+    console.log(subscription);
+
+    if (!subscription) {
+      return res.status(400).json({ error: 'Invalid Subscription' });
+    }
+
+    await subscription.destroy();
+
+    return res.json();
+  }
 }
 
 export default new SubscriptionController();
