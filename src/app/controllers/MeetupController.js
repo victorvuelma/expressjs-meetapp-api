@@ -56,6 +56,7 @@ class MeetupController {
       where,
       limit: 10,
       offset: (page - 1) * 10,
+      order: [['date', 'asc']],
       include: [
         {
           model: User,

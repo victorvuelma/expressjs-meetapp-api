@@ -14,6 +14,7 @@ class SubscriptionController {
       where: {
         user_id: req.userId,
       },
+      order: [['meetup', 'date', 'asc']],
       include: [
         {
           model: Meetup,
@@ -25,11 +26,6 @@ class SubscriptionController {
           },
           attributes: ['id', 'title', 'description', 'date', 'location'],
           include: [
-            {
-              model: User,
-              as: 'user',
-              attributes: ['id', 'name'],
-            },
             {
               model: File,
               as: 'image',
@@ -138,7 +134,6 @@ class SubscriptionController {
         meetup_id: meetupId,
       },
     });
-    console.log(subscription);
 
     if (!subscription) {
       return res.status(400).json({ error: 'Invalid Subscription' });

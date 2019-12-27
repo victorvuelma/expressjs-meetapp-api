@@ -5,6 +5,7 @@ class OrganizingController {
   async index(req, res) {
     const meetups = await Meetup.findAll({
       where: { user_id: req.userId },
+      order: [['date', 'asc']],
       include: [
         {
           model: File,
