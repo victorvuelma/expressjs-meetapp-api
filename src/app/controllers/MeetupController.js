@@ -16,13 +16,6 @@ class MeetupController {
           model: User,
           as: 'user',
           attributes: ['id', 'name', 'email'],
-          include: [
-            {
-              model: File,
-              as: 'avatar',
-              attributes: ['path', 'url'],
-            },
-          ],
         },
         {
           model: File,
@@ -68,13 +61,6 @@ class MeetupController {
           model: User,
           as: 'user',
           attributes: ['id', 'name', 'email'],
-          include: [
-            {
-              model: File,
-              as: 'avatar',
-              attributes: ['path', 'url'],
-            },
-          ],
         },
         {
           model: File,
