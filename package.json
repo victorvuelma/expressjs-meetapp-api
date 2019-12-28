@@ -6,7 +6,9 @@
   "license": "MIT",
   "scripts": {
     "queue": "nodemon src/queue.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "build": "sucrase ./src -d ./dist --transforms imports",
+    "start": "node dist/server.js"
   },
   "devDependencies": {
     "eslint": "^6.6.0",
